@@ -1,0 +1,20 @@
+Names of animals in a given enclosure:
+SELECT name FROM animals WHERE enclosureId = 1;
+
+Names of staff working in a given enclosure:
+SELECT employeeId FROM assignment WHERE enclosureId = 1;
+SELECT name FROM staff WHERE id = 1;
+
+Name of enclosure where the oldest animal lives:
+SELECT type, age FROM animals ORDER BY age DESC LIMIT 1;
+SELECT name FROM enclosures WHERE id = 1;
+
+Names of staff working in enclosures which are closed for maintenance:
+select staff.name
+from staff
+inner join assignment
+on staff.id=assignment.employeeId
+inner join enclosures
+on assignment.enclosureId=enclosures.id
+where enclosures.closedformaintenance = true;
+
