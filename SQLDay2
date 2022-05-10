@@ -1,20 +1,37 @@
 Names of animals in a given enclosure:
-SELECT name FROM animals WHERE enclosureId = 1;
+SELECT animals.name FROM animals INNER JOIN enclosures ON 
+animals.enclosureid = enclosures.id
+WHERE enclosures.name = 'Big Cat Field';
 
 Names of staff working in a given enclosure:
-SELECT employeeId FROM assignment WHERE enclosureId = 1;
-SELECT name FROM staff WHERE id = 1;
+SELECT staff.name, enclosures.name FROM staff INNER JOIN assignment
+ON staff.id = employeeid INNER JOIN enclosures 
+ON assignment.enclosureid = enclosures.id 
+WHERE enclosures.name = 'Birdhouse';
 
-Name of enclosure where the oldest animal lives:
-SELECT type, age FROM animals ORDER BY age DESC LIMIT 1;
-SELECT name FROM enclosures WHERE id = 1;
 
 Names of staff working in enclosures which are closed for maintenance:
-select staff.name
-from staff
-inner join assignment
-on staff.id=assignment.employeeId
-inner join enclosures
-on assignment.enclosureId=enclosures.id
-where enclosures.closedformaintenance = true;
+SELECT staff.name FROM staff INNER JOIN assignment ON
+staff.id = employeeid INNER JOIN enclosures ON
+assignment.enclosureid = enclosures.id
+WHERE enclosures.closedformaintenance = true;
+
+Name of enclosure where the oldest animal lives:
+SELECT enclosures.name FROM enclosures INNER JOIN animals ON
+animals.enclosureid = enclosures.id
+ORDER BY animals.age DESC 
+LIMIT 1;
+
+The number of different animal types a given keeper has been assigned to work with:
+SELECT COUNT (DISTINCT animals.type) FROM animals INNER JOIN enclosures ON animals.enclosureid = enclosures.id
+INNER JOIN  assignment ON enclosures.id = assignment.enclosureid
+INNER JOIN staff ON assignment.employeeid = staff.id
+WHERE staff.name = 'Michelle';
+
+The number of different keepers who have been assigned to work in a given enclosure:
+SELECT COUNT(staff.id) FROM staff INNER JOIN assignment ON staff.id = assignment.employeeid
+INNER JOIN enclosures ON assignment.enclosureid = enclosures.id WHERE enclosures.name = 'Big Cat Field'
+
+The names of the other animals sharing an enclosure with a given animal:
+
 
